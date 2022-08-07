@@ -1,0 +1,22 @@
+{
+    "name": "Zhiniao Toolbox",
+    "version": "1.0",
+    "description": "Toolbox Extension for Zhiniao!",
+    "manifest_version": 2,
+    "permissions": ["declarativeContent", "storage"],
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
+    "content_scripts": [
+        {
+          "js": ["content-script.js","jquery.js"],
+          "matches": [
+            "https://www.zhi-niao.com/*"
+          ]
+        }
+      ],
+    "browser_action": {
+        "default_popup": "popup.html"
+    }
+}
