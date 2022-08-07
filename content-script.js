@@ -6,54 +6,78 @@ question_data = [];
 question_dic = {};
 text = ""
 const callback = function (mutationList) {
-    // 答案元素 
-    title = document.evaluate('//*[@id="examWatermark"]/div[5]/div[1]/div/div/div[1]/div/div', document).iterateNext();
-    answer = document.evaluate('//*[@id="examWatermark"]/div[5]/div[2]/span', document).iterateNext();
+    hash = window.location.hash
 
-    question_title = document.evaluate('//*[@id="examWatermark"]/div[4]/div[1]/div/div/div[1]/div/div', document).iterateNext();
-    //获取选项
-    question_options = document.evaluate('//*[@id="examWatermark"]/div[4]/div[2]', document).iterateNext();
-    //点击
-    // question_options.childNodes[0].click()
-    if (title == null && question_title == null){
-        console.log('无效加载')
+
+    if (hash.startsWith('#/home/examDetail/')) {
+        tags = document.evaluate('//*[@id="examWatermark"]', document).iterateNext();
+        div_idx = -1;
+        for (idx in tags.childNodes) {
+            if (tags.childNodes[idx].textContent.endsWith('题') || tags.childNodes[idx].textContent.endsWith('交卷') ) {
+                div_idx = Number(idx) + 1;
+                break;
+            }
+        }
+        title = tags.childNodes[div_idx].childNodes[0]
+        answer = tags.childNodes[div_idx].childNodes[1]
+
+        if (document.querySelector("#examWatermark > div:nth-child(1) > div > span") == null) {
+            // 答案页
+            if (title && title.textContent != '') {
+                console.log('加载题库')
+                text += "\n" + title.textContent + "  " + answer.textContent;
+                // data.push(title.textContent+"\n"+answer.textContent)
+                // console.log(data)
+                question_data.push({
+                    "title": title.textContent,
+                    "answer": answer.textContent
+                })
+                question_dic[title.textContent] = answer.textContent;
+                console.log(text)
+            }
+        } else {
+            // 作答
+            //获取题目
+            question_title = title//document.evaluate('//*[@id="examWatermark"]/div[4]/div[1]/div/div/div[1]/div/div', document).iterateNext();
+            //获取选项
+            question_options = answer // document.evaluate('//*[@id="examWatermark"]/div[4]/div[2]', document).iterateNext();
+            if (question_title == null || question_title == '') {
+                return
+            }
+            console.log('答题')
+            answer_text = question_dic[question_title.textContent]
+            if (answer_text != null) {
+                console.log(answer_text);
+                answers = answer_text.split(' ')[1].split('、');
+                for (idx in answers) {
+                    option_array = "ABCDEFGH"
+                    index = option_array.indexOf(answers[idx])
+                    if (index != -1) {
+                        question_options.childNodes[index].click();
+                        console.log(answer)
+                    }
+                }
+            } else {
+                console.log('本题答案不在数据库中')
+            }
+        }
+
+
+    } else if (hash.startsWith('#/home/courseDetail/')) {
+        视频页
+
+    } else {
         return
     }
-    else if (title == null && answer == null){
-        if (question_title == null || question_title == ''){
-            return
-        }
-        console.log('答题')
-        answer_text = question_dic[question_title.textContent]
-        if (answer_text != null){
-            console.log(answer_text);
-            answers = answer_text.split(' ')[1].split('、');
-            for (answer in answers){
-                option_array = "ABCDEFGH"
-                index = option_array.indexOf(answer)
-                if (index != -1){
-                    question_options.childNodes[index].click();
-                    console.log(answer)
-                }
-            }
-        }else{
-            console.log('本题答案不在数据库中')
-        }
-        //not found
 
-    }
-    else if (title && title.textContent != '') {
-        console.log('加载题库')
-        text += "\n" + title.textContent + "  " + answer.textContent;
-        // data.push(title.textContent+"\n"+answer.textContent)
-        // console.log(data)
-        question_data.push({
-            "title": title.textContent,
-            "answer": answer.textContent
-        })
-        question_dic[title.textContent] = answer.textContent;
-        console.log(text)
-    }
+    // 答案元素
+    //*[@id="examWatermark"]/div[7]/div[1]/div/div/div[1]/div/div
+    //*[@id="examWatermark"]/div[6]/div[1]/div/div/div[1]/div/div
+
+
+    //点击
+    // question_options.childNodes[0].click()
+
 }
 const observer = new MutationObserver(callback);
 observer.observe(body, config);

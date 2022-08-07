@@ -10,7 +10,7 @@
     },
     "content_scripts": [
         {
-          "js": ["content-script.js","jquery.js"],
+          "js": ["content-script.js"],
           "matches": [
             "https://www.zhi-niao.com/*"
           ]
