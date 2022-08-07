@@ -64,8 +64,10 @@ const callback = function (mutationList) {
 
 
     } else if (hash.startsWith('#/home/courseDetail/')) {
-        视频页
-
+        //视频页
+        if (document.querySelector("#course-video_html5_api").playbackRate<16){
+            document.querySelector("#course-video_html5_api").playbackRate=16.0
+        }
     } else {
         return
     }
@@ -82,11 +84,16 @@ const callback = function (mutationList) {
 const observer = new MutationObserver(callback);
 observer.observe(body, config);
 
-// question_title = document.evaluate('//*[@id="examWatermark"]/div[4]/div[1]/div/div/div[1]/div/div', document).iterateNext();
-// //获取选项
-// question_options = document.evaluate('//*[@id="examWatermark"]/div[4]/div[2]', document).iterateNext();
-// //点击
-// question_options.childNodes[0].click()
 
-// options = document.evaluate('//*[@id="examWatermark"]/div[5]/div[3]', document).iterateNext();
-// option1text = options.childNodes[0].textContent
+document.addEventListener("DOMContentLoaded",function(){
+    // let js = 'injected.js'
+    // let tmp = document.createElement('scripts');
+    // tmp.src = chrome.extension.getURL(js);
+    // tmp.setAttribute('type','text/javascript');
+    // document.head.appendChild(tmp)
+    //if window.location
+    hash = window.location.hash;
+    if (hash.startsWith('#/home/courseDetail/')){
+        document.querySelector("#course-video_html5_api").playbackRate=16.0
+    }
+});
