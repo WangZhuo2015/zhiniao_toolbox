@@ -20,6 +20,7 @@ const callback = function (mutationList) {
         }
         title = tags.childNodes[div_idx].childNodes[0]
         answer = tags.childNodes[div_idx].childNodes[1]
+        options = tags.childNodes[div_idx].childNodes[2]
 
         if (document.querySelector("#examWatermark > div:nth-child(1) > div > span") == null) {
             // 答案页
@@ -28,9 +29,16 @@ const callback = function (mutationList) {
                 text += "\n" + title.textContent + "  " + answer.textContent;
                 // data.push(title.textContent+"\n"+answer.textContent)
                 // console.log(data)
+
+                // option_list = []
+                // for (idx in options){
+                //     option_list.push(options[idx].textContent)
+                // }
+
                 question_data.push({
                     "title": title.textContent,
-                    "answer": answer.textContent
+                    "answer": answer.textContent,
+                    "options": options.textContent
                 })
                 question_dic[title.textContent] = answer.textContent;
                 console.log(text)
@@ -61,7 +69,6 @@ const callback = function (mutationList) {
                 console.log('本题答案不在数据库中')
             }
         }
-
 
     } else if (hash.startsWith('#/home/courseDetail/')) {
         //视频页
