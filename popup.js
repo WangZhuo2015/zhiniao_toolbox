@@ -1,3 +1,4 @@
+const dataDiv = document.getElementById('dataDiv');
 document.addEventListener('DOMContentLoaded', function () {
   const dataDiv = document.getElementById('dataDiv');
   chrome.storage.local.get(['question_dic'], function (result) {
@@ -42,6 +43,7 @@ document.addEventListener('DOMContentLoaded', function () {
             chrome.storage.local.set({ question_dic: question_dic }, function () {
               console.log('Question data is updated with new JSON file.');
               chrome.runtime.sendMessage({ message: 'question_dic_updated' });
+              dataDiv.innerText = JSON.stringify(result.question_dic, null, 2);
             });
           }
         });
@@ -85,6 +87,7 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
           chrome.runtime.sendMessage({ message: 'question_dic_updated' });
           console.log('Data cleared successfully.');
+          dataDiv.innerText = JSON.stringify({}, null, 2);
         }
       });
     }
