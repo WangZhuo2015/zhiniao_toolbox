@@ -40,7 +40,12 @@ const callback = function (mutationList) {
                     "answer": answer.textContent,
                     "options": options.textContent
                 })
+                data = JSON.stringify(question_data)
+                // alert(data)
                 question_dic[title.textContent] = answer.textContent;
+                chrome.storage.local.set({question_dic: question_dic}, function() {
+                    console.log('Question data is stored in storage.');
+                  });
                 console.log(text)
             }
         } else {
