@@ -109,3 +109,20 @@ document.addEventListener("DOMContentLoaded",function(){
         document.querySelector("#course-video_html5_api").playbackRate=16.0
     }
 });
+
+chrome.runtime.onMessage.addListener(
+    function(request, sender, sendResponse) {
+      if (request.message === 'question_dic_updated') {
+        // 当收到 'question_dic_updated' 消息时，从存储中取出最新的数据
+        chrome.storage.local.get(['question_dic'], function(result) {
+          if (chrome.runtime.lastError) {
+            console.log('An error occurred: ' + chrome.runtime.lastError.message);
+          } else {
+            question_dic = result.question_dic;
+            console.log('Question data is updated in content script.');
+          }
+        });
+      }
+    }
+  );
+  
